@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  pocketbase:
+    image: spectado/pocketbase:latest
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - ${API_PORT}:80
+    volumes:
+      - ./api/pb_data:/pb_data
+      - ./api/pb_migrations:/pb_migrations
+      - ./api/pb_public:/pb_public
+  webapp:
+    depends_on:
+      - pocketbase
+    build: ./
+    env_file: .env
+    ports:
+      - ${VITE_PORT}:${VITE_PORT}
+    volumes:
+      - ./:/app
+      - /app/node_modules

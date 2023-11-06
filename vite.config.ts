@@ -13,5 +13,8 @@ export default ({ mode }) => {
         usePolling: true,
       },
     },
+    define: {
+      global: {},
+    },
   });
 };

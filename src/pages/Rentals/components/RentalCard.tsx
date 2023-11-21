@@ -1,30 +1,27 @@
 import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Box from '@mui/joy/Box';
 import Card from '@mui/joy/Card';
-import Chip from '@mui/joy/Chip';
 import IconButton from '@mui/joy/IconButton';
 import Link from '@mui/joy/Link';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
-import Rating from './Rating';
+import { nToLuFormat } from '../../../utils/number.utils';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import PersonIcon from '@mui/icons-material/Person';
+import { timeSince } from '../../../utils/time.utils';
+import Post from '../../../types/post';
+import { parseExpand } from '../../../utils/pb.utils';
 
 type RentalCardProps = {
-  category: React.ReactNode;
-  image: string;
   liked?: boolean;
-  rareFind?: boolean;
-  title: React.ReactNode;
+  post: Post;
 };
 
-export default function RentalCard({
-  category,
-  title,
-  rareFind = false,
-  liked = false,
-  image,
-}: RentalCardProps) {
+export default function RentalCard({ liked = false, post }: RentalCardProps) {
   const [isLiked, setIsLiked] = React.useState(liked);
+  const [p] = React.useState<Post>(parseExpand(post)[0]);
+
   return (
     <Card
       variant="outlined"
@@ -51,53 +48,6 @@ export default function RentalCard({
         width="100%"
         spacing={2.5}
       >
-        <Box
-          sx={{
-            width: {
-              xs: '100%',
-              sm: 200,
-            },
-            marginBottom: {
-              xs: -2.5,
-              sm: 0,
-            },
-          }}
-        >
-          <AspectRatio
-            ratio={16 / 9}
-            sx={(theme) => ({
-              borderRadius: 'xs',
-              [theme.breakpoints.down('sm')]: {
-                borderBottomLeftRadius: 0,
-                borderBottomRightRadius: 0,
-              },
-            })}
-          >
-            <img alt="" src={image} style={{ display: 'block' }} />
-            {rareFind && (
-              <Chip
-                variant="soft"
-                startDecorator={<i data-feather="award" />}
-                size="sm"
-                sx={{ position: 'absolute', bottom: 8, left: 8 }}
-              >
-                Rare find
-              </Chip>
-            )}
-            <IconButton
-              variant={isLiked ? 'solid' : 'soft'}
-              onClick={() => setIsLiked((prev) => !prev)}
-              sx={{
-                position: 'absolute',
-                bottom: 8,
-                right: 8,
-                display: { xs: 'flex', sm: 'none' },
-              }}
-            >
-              <i data-feather="star" />
-            </IconButton>
-          </AspectRatio>
-        </Box>
         <Stack
           sx={{
             padding: {
@@ -108,24 +58,14 @@ export default function RentalCard({
           spacing={1}
           flex={1}
         >
-          <Stack
-            spacing={1}
-            direction="row"
-            justifyContent="space-between"
-            alignItems="flex-start"
-          >
+          <Stack spacing={1} direction="row" justifyContent="space-between" alignItems="flex-start">
             <div>
               <Typography color="primary" fontSize="sm" fontWeight="lg">
-                {category}
+                {p.tags?.map((t) => t.name).join(', ')}
               </Typography>
               <Typography fontWeight="md" fontSize="lg">
-                <Link
-                  overlay
-                  underline="none"
-                  href="#interactive-card"
-                  sx={{ color: 'text.primary' }}
-                >
-                  {title}
+                <Link overlay underline="none" href={`/posts/${p.id}`} sx={{ color: 'text.primary' }}>
+                  {p.title}
                 </Link>
               </Typography>
             </div>
@@ -136,39 +76,37 @@ export default function RentalCard({
                 display: { xs: 'none', sm: 'flex' },
               }}
             >
-              <i data-feather="star" />
+              <i data-feather="thumbs-up" />
             </IconButton>
           </Stack>
-          <Stack spacing={1} direction="row">
-            <Rating />
-
-            <Typography>202 reviews</Typography>
-          </Stack>
-
           <Stack spacing={3} direction="row">
-            <Typography startDecorator={<i data-feather="map-pin" />}>
-              Collingwood VIC
-            </Typography>
+            <Typography startDecorator={<PersonIcon />}>Luka Cerrutti</Typography>
             <Typography
-              startDecorator={<i data-feather="box" />}
+              startDecorator={<AccessTimeIcon />}
               display={{
                 xs: 'none',
                 md: 'flex',
               }}
             >
-              1 bed
+              Hace {timeSince(new Date(p.created || Date.now()))}
             </Typography>
             <Typography
-              startDecorator={<i data-feather="wifi" />}
+              startDecorator={<VisibilityIcon />}
               display={{
                 xs: 'none',
                 md: 'flex',
               }}
             >
-              Wi-Fi
+              {nToLuFormat(p.views)} vistas
             </Typography>
-            <Typography sx={{ flexGrow: 1, textAlign: 'right' }}>
-              <strong>$540</strong> <Typography>total</Typography>
+            <Typography
+              startDecorator={<ThumbUpIcon />}
+              display={{
+                xs: 'none',
+                md: 'flex',
+              }}
+            >
+              {nToLuFormat(p.likes)} likes
             </Typography>
           </Stack>
         </Stack>

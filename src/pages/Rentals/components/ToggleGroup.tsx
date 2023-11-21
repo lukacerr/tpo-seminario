@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/joy/Box';
 import Radio, { radioClasses } from '@mui/joy/Radio';
 import RadioGroup from '@mui/joy/RadioGroup';
+import { SxProps } from '@mui/material';
 
 type Option = {
   label: React.ReactNode;
@@ -10,21 +11,21 @@ type Option = {
 
 type ToggleGroupProps = {
   options: Option[];
+  sx?: SxProps;
 };
 
-export default function ToggleGroup({ options }: ToggleGroupProps) {
+export default function ToggleGroup({ options, sx }: ToggleGroupProps) {
   const [selectedOption, setSelectedOption] = React.useState(options[0].value);
 
   return (
     <RadioGroup
+      sx={sx}
       orientation="horizontal"
       aria-label="Alignment"
       name="alignment"
       variant="outlined"
       value={selectedOption}
-      onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-        setSelectedOption(event.target.value)
-      }
+      onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSelectedOption(event.target.value)}
     >
       {options.map((option, index) => (
         <Box

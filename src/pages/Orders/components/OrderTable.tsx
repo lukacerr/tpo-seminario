@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { ColorPaletteProp } from '@mui/joy/styles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -24,16 +24,21 @@ import MenuButton from '@mui/joy/MenuButton';
 import MenuItem from '@mui/joy/MenuItem';
 import Dropdown from '@mui/joy/Dropdown';
 // icons
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import BlockIcon from '@mui/icons-material/Block';
-import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
+import TaskIcon from '@mui/icons-material/Task';
+import AddReactionIcon from '@mui/icons-material/AddReaction';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+import Course, { DifficultyTag } from '../../../types/course';
+import { parseExpand } from '../../../utils/pb.utils';
+import DevicesIcon from '@mui/icons-material/Devices';
+import { timeSince } from '../../../utils/time.utils';
 
+/*
 const rows = [
   {
     id: 'INV-1234',
@@ -45,177 +50,8 @@ const rows = [
       email: 'olivia@email.com',
     },
   },
-  {
-    id: 'INV-1233',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-    },
-  },
-  {
-    id: 'INV-1232',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-    },
-  },
-  {
-    id: 'INV-1231',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-    },
-  },
-  {
-    id: 'INV-1230',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-    },
-  },
-  {
-    id: 'INV-1229',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-    },
-  },
-  {
-    id: 'INV-1228',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-    },
-  },
-  {
-    id: 'INV-1227',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-    },
-  },
-  {
-    id: 'INV-1226',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-    },
-  },
-  {
-    id: 'INV-1234',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  },
-  {
-    id: 'INV-1233',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-    },
-  },
-  {
-    id: 'INV-1232',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-    },
-  },
-  {
-    id: 'INV-1231',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-    },
-  },
-  {
-    id: 'INV-1230',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-    },
-  },
-  {
-    id: 'INV-1229',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-    },
-  },
-  {
-    id: 'INV-1228',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-    },
-  },
-  {
-    id: 'INV-1227',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-    },
-  },
-  {
-    id: 'INV-1226',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-    },
-  },
 ];
+*/
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -232,10 +68,7 @@ type Order = 'asc' | 'desc';
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
-) => number {
+): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -245,10 +78,7 @@ function getComparator<Key extends keyof any>(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(
-  array: readonly T[],
-  comparator: (a: T, b: T) => number
-) {
+function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -263,10 +93,7 @@ function stableSort<T>(
 function RowMenu() {
   return (
     <Dropdown>
-      <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'sm' } }}
-      >
+      <MenuButton slots={{ root: IconButton }} slotProps={{ root: { variant: 'plain', color: 'neutral', size: 'sm' } }}>
         <MoreHorizRoundedIcon />
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
@@ -280,46 +107,50 @@ function RowMenu() {
   );
 }
 
-export default function OrderTable() {
+export default function OrderTable({ courses }: React.PropsWithRef<{ courses: Course[] }>) {
   const [order, setOrder] = useState<Order>('desc');
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [open, setOpen] = useState(false);
+  const [rows] = useState(parseExpand(courses));
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  if (!rows || !rows?.length) return <></>;
+
   const renderFilters = () => (
     <>
       <FormControl size="sm">
-        <FormLabel>Status</FormLabel>
-        <Select
-          size="sm"
-          placeholder="Filter by status"
-          slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
-        >
-          <Option value="paid">Paid</Option>
-          <Option value="pending">Pending</Option>
-          <Option value="refunded">Refunded</Option>
-          <Option value="cancelled">Cancelled</Option>
+        <FormLabel>Dificultad</FormLabel>
+        <Select size="sm" placeholder="Filtrar por dificultad" slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}>
+          <Option value="all">* Todas</Option>
+          <Option value="paid">Principiante</Option>
+          <Option value="pending">Intermedio</Option>
+          <Option value="refunded">Avanzado</Option>
         </Select>
       </FormControl>
 
       <FormControl size="sm">
-        <FormLabel>Category</FormLabel>
+        <FormLabel>Etiquetas</FormLabel>
         <Select size="sm" placeholder="All">
-          <Option value="all">All</Option>
-          <Option value="refund">Refund</Option>
-          <Option value="purchase">Purchase</Option>
-          <Option value="debit">Debit</Option>
+          <Option value="all">* Todas</Option>
+          <Option value="fintech">Fintech</Option>
+          <Option value="politica">Política</Option>
+          <Option value="plazofijo">Plazo fijo</Option>
+          <Option value="acciones">Acciones</Option>
+          <Option value="dolar">Dólar</Option>
+          <Option value="Criptomonedas">Criptomonedas</Option>
         </Select>
       </FormControl>
 
       <FormControl size="sm">
-        <FormLabel>Customer</FormLabel>
+        <FormLabel>Proveedor</FormLabel>
         <Select size="sm" placeholder="All">
           <Option value="all">All</Option>
-          <Option value="olivia">Olivia Rhye</Option>
-          <Option value="steve">Steve Hampton</Option>
-          <Option value="ciaran">Ciaran Murray</Option>
-          <Option value="marina">Marina Macdonald</Option>
-          <Option value="charles">Charles Fulton</Option>
-          <Option value="jay">Jay Hoper</Option>
+          {Array.from(new Set(rows.map((r) => r.provider))).map((p) => (
+            <Option value={p}>{p}</Option>
+          ))}
         </Select>
       </FormControl>
     </>
@@ -337,18 +168,8 @@ export default function OrderTable() {
           gap: 1,
         }}
       >
-        <Input
-          size="sm"
-          placeholder="Search"
-          startDecorator={<SearchIcon />}
-          sx={{ flexGrow: 1 }}
-        />
-        <IconButton
-          size="sm"
-          variant="outlined"
-          color="neutral"
-          onClick={() => setOpen(true)}
-        >
+        <Input size="sm" placeholder="Buscar" startDecorator={<SearchIcon />} sx={{ flexGrow: 1 }} />
+        <IconButton size="sm" variant="outlined" color="neutral" onClick={() => setOpen(true)}>
           <FilterAltIcon />
         </IconButton>
         <Modal open={open} onClose={() => setOpen(false)}>
@@ -387,12 +208,8 @@ export default function OrderTable() {
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for order</FormLabel>
-          <Input
-            size="sm"
-            placeholder="Search"
-            startDecorator={<SearchIcon />}
-          />
+          <FormLabel>Búsqueda por título</FormLabel>
+          <Input size="sm" placeholder="Buscar" startDecorator={<SearchIcon />} />
         </FormControl>
         {renderFilters()}
       </Box>
@@ -413,36 +230,24 @@ export default function OrderTable() {
           stickyHeader
           hoverRow
           sx={{
-            '--TableCell-headBackground':
-              'var(--joy-palette-background-level1)',
+            '--TableCell-headBackground': 'var(--joy-palette-background-level1)',
             '--Table-headerUnderlineThickness': '1px',
-            '--TableRow-hoverBackground':
-              'var(--joy-palette-background-level1)',
+            '--TableRow-hoverBackground': 'var(--joy-palette-background-level1)',
             '--TableCell-paddingY': '4px',
             '--TableCell-paddingX': '8px',
           }}
         >
           <thead>
             <tr>
-              <th
-                style={{ width: 48, textAlign: 'center', padding: '12px 6px' }}
-              >
+              <th style={{ width: 48, textAlign: 'center', padding: '12px 6px' }}>
                 <Checkbox
                   size="sm"
-                  indeterminate={
-                    selected.length > 0 && selected.length !== rows.length
-                  }
+                  indeterminate={selected.length > 0 && selected.length !== rows.length}
                   checked={selected.length === rows.length}
                   onChange={(event) => {
-                    setSelected(
-                      event.target.checked ? rows.map((row) => row.id) : []
-                    );
+                    setSelected(event.target.checked ? rows.map((row) => row.id) : []);
                   }}
-                  color={
-                    selected.length > 0 || selected.length === rows.length
-                      ? 'primary'
-                      : undefined
-                  }
+                  color={selected.length > 0 || selected.length === rows.length ? 'primary' : undefined}
                   sx={{ verticalAlign: 'text-bottom' }}
                 />
               </th>
@@ -457,18 +262,18 @@ export default function OrderTable() {
                   sx={{
                     '& svg': {
                       transition: '0.2s',
-                      transform:
-                        order === 'desc' ? 'rotate(0deg)' : 'rotate(180deg)',
+                      transform: order === 'desc' ? 'rotate(0deg)' : 'rotate(180deg)',
                     },
                   }}
                 >
-                  Invoice
+                  Identifiación
                 </Link>
               </th>
-              <th style={{ width: 140, padding: '12px 6px' }}>Date</th>
-              <th style={{ width: 140, padding: '12px 6px' }}>Status</th>
-              <th style={{ width: 240, padding: '12px 6px' }}>Customer</th>
-              <th style={{ width: 140, padding: '12px 6px' }}> </th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Título</th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Agregado hace</th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Dificultad</th>
+              <th style={{ width: 240, padding: '12px 6px' }}>Proveedor</th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -481,9 +286,7 @@ export default function OrderTable() {
                     color={selected.includes(row.id) ? 'primary' : undefined}
                     onChange={(event) => {
                       setSelected((ids) =>
-                        event.target.checked
-                          ? ids.concat(row.id)
-                          : ids.filter((itemId) => itemId !== row.id)
+                        event.target.checked ? ids.concat(row.id) : ids.filter((itemId) => itemId !== row.id)
                       );
                     }}
                     slotProps={{ checkbox: { sx: { textAlign: 'left' } } }}
@@ -494,7 +297,12 @@ export default function OrderTable() {
                   <Typography level="body-xs">{row.id}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.date}</Typography>
+                  <Typography level="body-xs">{row.title}</Typography>
+                </td>
+                <td>
+                  <Typography level="body-xs">
+                    {capitalizeFirstLetter(timeSince(new Date(row.created || '')).replace('Hace ', ''))}
+                  </Typography>
                 </td>
                 <td>
                   <Chip
@@ -502,41 +310,42 @@ export default function OrderTable() {
                     size="sm"
                     startDecorator={
                       {
-                        Paid: <CheckRoundedIcon />,
-                        Refunded: <AutorenewRoundedIcon />,
-                        Cancelled: <BlockIcon />,
-                      }[row.status]
+                        STARTER: <AddReactionIcon />,
+                        INTERMIDIATE: <TaskIcon />,
+                        ADVANCED: <DevicesIcon />,
+                      }[row.difficulty]
                     }
                     color={
                       {
-                        Paid: 'success',
-                        Refunded: 'neutral',
-                        Cancelled: 'danger',
-                      }[row.status] as ColorPaletteProp
+                        STARTER: 'success',
+                        INTERMIDIATE: 'warning',
+                        ADVANCED: 'danger',
+                      }[row.difficulty] as ColorPaletteProp
                     }
                   >
-                    {row.status}
+                    {DifficultyTag[row.difficulty]}
                   </Chip>
                 </td>
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Avatar size="sm">{row.customer.initial}</Avatar>
+                    <Avatar size="sm">{row.provider[0]}</Avatar>
                     <div>
                       <Typography level="body-xs">
-                        {row.customer.name}
+                        <b>{row.provider}</b>
                       </Typography>
-                      <Typography level="body-xs">
-                        {row.customer.email}
-                      </Typography>
+                      {row.professors && (
+                        <Typography level="body-xs">
+                          <i>{row.professors}</i>
+                        </Typography>
+                      )}
                     </div>
                   </Box>
                 </td>
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Link level="body-xs" component="button">
-                      Download
+                    <Link level="body-sm" href={row.redirect} target="_blank">
+                      <Typography startDecorator={<ExitToAppIcon />}>Ir al curso</Typography>
                     </Link>
-                    <RowMenu />
                   </Box>
                 </td>
               </tr>
@@ -556,35 +365,20 @@ export default function OrderTable() {
           },
         }}
       >
-        <Button
-          size="sm"
-          variant="outlined"
-          color="neutral"
-          startDecorator={<KeyboardArrowLeftIcon />}
-        >
-          Previous
+        <Button size="sm" variant="outlined" color="neutral" startDecorator={<KeyboardArrowLeftIcon />}>
+          Previa
         </Button>
 
         <Box sx={{ flex: 1 }} />
         {['1', '2', '3', '…', '8', '9', '10'].map((page) => (
-          <IconButton
-            key={page}
-            size="sm"
-            variant={Number(page) ? 'outlined' : 'plain'}
-            color="neutral"
-          >
+          <IconButton key={page} size="sm" variant={Number(page) ? 'outlined' : 'plain'} color="neutral">
             {page}
           </IconButton>
         ))}
         <Box sx={{ flex: 1 }} />
 
-        <Button
-          size="sm"
-          variant="outlined"
-          color="neutral"
-          endDecorator={<KeyboardArrowRightIcon />}
-        >
-          Next
+        <Button size="sm" variant="outlined" color="neutral" endDecorator={<KeyboardArrowRightIcon />}>
+          Siguiente
         </Button>
       </Box>
     </>

@@ -5,9 +5,13 @@ import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Input from '@mui/joy/Input';
 import DropZone from './DropZone';
-import { Option, Select } from '@mui/joy';
+import { Link, Option, Select } from '@mui/joy';
+import MessageInput from './MessageInput';
+import { useState } from 'react';
 
 export default function UploadFile() {
+  const [textAreaValue, setTextAreaValue] = useState('');
+
   return (
     <Box
       sx={{
@@ -26,42 +30,28 @@ export default function UploadFile() {
         },
       }}
     >
-      <FormLabel sx={{ display: { xs: 'none', sm: 'block' } }}>
-        File Name
-      </FormLabel>
+      <FormLabel sx={{ display: { xs: 'none', sm: 'block' } }}>Título *</FormLabel>
       <Box sx={{ display: { xs: 'contents', sm: 'flex' }, gap: 2 }}>
         <FormControl sx={{ flex: 1 }}>
-          <FormLabel sx={{ display: { sm: 'none' } }}>File Name</FormLabel>
-          <Input placeholder="Name" />
+          <FormLabel sx={{ display: { sm: 'none' } }}>Título</FormLabel>
+          <Input placeholder="Título" />
         </FormControl>
         <FormControl sx={{ flex: 1 }}>
           <FormLabel sx={{ display: { sm: 'none' } }}></FormLabel>
         </FormControl>
       </Box>
       <Divider role="presentation" />
-      <FormLabel sx={{ display: { xs: 'none', sm: 'block' } }}>
-        Description
-      </FormLabel>
+      <FormLabel sx={{ display: { xs: 'none', sm: 'block' } }}>Etiqueta *</FormLabel>
       <Box sx={{ display: { xs: 'contents', sm: 'flex' }, gap: 2 }}>
         <FormControl sx={{ flex: 1 }}>
-          <FormLabel sx={{ display: { sm: 'none' } }}>Description</FormLabel>
-          <Input placeholder="Description" />
-        </FormControl>
-        <FormControl sx={{ flex: 1 }}>
-          <FormLabel sx={{ display: { sm: 'none' } }}></FormLabel>
-        </FormControl>
-      </Box>
-      <Divider role="presentation" />
-      <FormLabel sx={{ display: { xs: 'none', sm: 'block' } }}>
-        Collection
-      </FormLabel>
-      <Box sx={{ display: { xs: 'contents', sm: 'flex' }, gap: 2 }}>
-        <FormControl sx={{ flex: 1 }}>
-          <FormLabel sx={{ display: { sm: 'none' } }}>Collection</FormLabel>
-          <Select placeholder="Collection">
-            <Option value="option1">Option 1</Option>
-            <Option value="option2">Option 2</Option>
-            <Option value="option3">Option 3</Option>
+          <FormLabel sx={{ display: { sm: 'none' } }}>Etiqueta</FormLabel>
+          <Select placeholder="Etiqueta">
+            <Option value={1}>Fintech</Option>
+            <Option value={2}>Política</Option>
+            <Option value={3}>Acciones</Option>
+            <Option value={4}>Plazo fijo</Option>
+            <Option value={5}>Dólar</Option>
+            <Option value={6}>Criptomonedas</Option>
           </Select>
         </FormControl>
         <FormControl sx={{ flex: 1 }}>
@@ -69,7 +59,20 @@ export default function UploadFile() {
         </FormControl>
       </Box>
       <Divider role="presentation" />
-      <FormLabel>File Upload</FormLabel>
+      <FormLabel>Contenido</FormLabel>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          flexWrap: 'wrap',
+          gap: 2.5,
+          width: '100%',
+        }}
+      >
+        <MessageInput textAreaValue={textAreaValue} setTextAreaValue={setTextAreaValue} onSubmit={() => {}} />
+      </Box>
+      <Divider role="presentation" />
+      <FormLabel>Adjuntar archivos</FormLabel>
       <Box
         sx={{
           display: 'flex',
@@ -89,10 +92,14 @@ export default function UploadFile() {
           gap: 1,
         }}
       >
-        <Button variant="outlined" color="neutral" size="sm">
-          Cancel
-        </Button>
-        <Button size="sm">Upload</Button>
+        <Link href="/">
+          <Button variant="outlined" color="neutral" size="sm">
+            Cancelar
+          </Button>
+        </Link>
+        <Link href="/">
+          <Button size="sm">Publicar</Button>
+        </Link>
       </Box>
     </Box>
   );

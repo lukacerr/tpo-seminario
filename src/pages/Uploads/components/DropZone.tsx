@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import Box from '@mui/joy/Box';
 import Card, { CardProps } from '@mui/joy/Card';
 import Link from '@mui/joy/Link';
@@ -37,11 +38,12 @@ export default function DropZone({ sx, ...props }: CardProps) {
         </Box>
       </Box>
       <Typography level="body-sm" textAlign="center">
+        Hacé{' '}
         <Link component="button" overlay>
-          Click to upload
+          click para subir
         </Link>{' '}
-        or drag and drop
-        <br /> SVG, PNG, JPG or GIF (max. 800x400px)
+        o arrastrá tus archivos
+        <br /> <i>Máximo 20MB en total</i>
       </Typography>
     </Card>
   );

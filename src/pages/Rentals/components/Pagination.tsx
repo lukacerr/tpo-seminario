@@ -6,27 +6,14 @@ import Typography from '@mui/joy/Typography';
 export default function Pagination() {
   return (
     <div>
-      <Box
-        className="Pagination-mobile"
-        sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}
-      >
-        <IconButton
-          aria-label="previous page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
+      <Box className="Pagination-mobile" sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
+        <IconButton aria-label="previous page" variant="outlined" color="neutral" size="sm">
           <i data-feather="arrow-left" />
         </IconButton>
         <Typography level="body-sm" mx="auto">
           Page 1 of 10
         </Typography>
-        <IconButton
-          aria-label="next page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
+        <IconButton aria-label="next page" variant="outlined" color="neutral" size="sm">
           <i data-feather="arrow-right" />
         </IconButton>
       </Box>
@@ -42,35 +29,20 @@ export default function Pagination() {
           },
         }}
       >
-        <Button
-          size="sm"
-          variant="plain"
-          color="neutral"
-          startDecorator={<i data-feather="arrow-left" />}
-        >
-          Previous
+        <Button size="sm" variant="plain" color="neutral" startDecorator={<i data-feather="arrow-left" />}>
+          Previa
         </Button>
 
         <Box sx={{ flex: 1 }} />
         {['1', '2', '3', '…', '8', '9', '10'].map((page) => (
-          <IconButton
-            key={page}
-            size="sm"
-            variant={Number(page) ? 'outlined' : 'plain'}
-            color="neutral"
-          >
+          <IconButton key={page} size="sm" variant={Number(page) ? 'outlined' : 'plain'} color="neutral">
             {page}
           </IconButton>
         ))}
         <Box sx={{ flex: 1 }} />
 
-        <Button
-          size="sm"
-          variant="plain"
-          color="neutral"
-          endDecorator={<i data-feather="arrow-right" />}
-        >
-          Next
+        <Button size="sm" variant="plain" color="neutral" endDecorator={<i data-feather="arrow-right" />}>
+          Siguiente
         </Button>
       </Box>
     </div>

@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import * as React from 'react';
-import Box from '@mui/joy/Box';
 import Divider from '@mui/joy/Divider';
 import Grid from '@mui/joy/Grid';
 import Stack from '@mui/joy/Stack';
@@ -12,12 +12,27 @@ import Filters from './components/Filters';
 import Toggles from './components/Toggles';
 import Pagination from './components/Pagination';
 import InnerLayout from '../../layouts/InnerLayout';
+import { useClientContext } from 'pocketbase-react';
+import Post from '../../types/post';
+import { parseExpand } from '../../utils/pb.utils';
+import { useParams } from 'react-router-dom';
+import PostModal from './components/PostModal';
 
-const useEnhancedEffect =
-  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+const useEnhancedEffect = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
 export default function RentalDashboard() {
   const status = useScript(`https://unpkg.com/feather-icons`);
+  const [records, setRecords] = React.useState<Post[] | null>(null);
+  const client = useClientContext();
+  const { id } = useParams();
+
+  React.useEffect(() => {
+    client
+      ?.collection<Post>('posts')
+      .getList(1, 50, { expand: 'user,tags', sort: '-created' })
+      .then((res) => setRecords(parseExpand(res.items)))
+      .catch(console.error);
+  }, [client]);
 
   useEnhancedEffect(() => {
     // Feather icon setup: https://github.com/feathericons/feather#4-replace
@@ -31,6 +46,7 @@ export default function RentalDashboard() {
   return (
     <InnerLayout>
       <Main>
+        {id && <PostModal id={id} />}
         <Grid
           container
           sx={{
@@ -40,7 +56,8 @@ export default function RentalDashboard() {
         >
           <Grid
             xs={12}
-            lg={8}
+            lg={16}
+            justifyContent="center"
             sx={{
               overflowY: 'auto',
               height: '100%',
@@ -52,70 +69,13 @@ export default function RentalDashboard() {
             <Stack spacing={2}>
               <HeaderSection />
               <Divider />
-              <Box
-                sx={{
-                  width: '100%',
-                  height: 360,
-                  backgroundSize: 'cover',
-                  backgroundImage:
-                    'url("https://images.unsplash.com/photo-1478860409698-8707f313ee8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4000&q=80")',
-                }}
-                display={{ xs: 'block', md: 'none' }}
-              />
               <Filters />
               <Search />
               <Toggles />
-              <RentalCard
-                title="A Stylish Apt, 5 min walk to Queen Victoria Market"
-                category="Entire apartment rental in Collingwood"
-                rareFind
-                image="https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=400"
-              />
-              <RentalCard
-                title="Designer NY style loft"
-                category="Entire loft in central business district"
-                liked
-                image="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400"
-              />
-              <RentalCard
-                title="5 minute walk from University of Melbourne"
-                category="Entire rental unit in Carlton"
-                image="https://images.unsplash.com/photo-1537726235470-8504e3beef77?auto=format&fit=crop&w=400"
-              />
-              <RentalCard
-                title="Magnificent apartment next to public transport"
-                category="Entire apartment rental in Collingwood"
-                image="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=400"
-              />
+              {records && records.length && records.map((r, i) => <RentalCard liked={i == 1} key={r.id} post={r} />)}
               <Divider />
               <Pagination />
             </Stack>
-          </Grid>
-          <Grid
-            xs={4}
-            sx={{
-              display: { xs: 'none', lg: 'block' },
-            }}
-          >
-            <Box
-              sx={{
-                borderLeft: '1px solid',
-                borderColor: 'divider',
-                padding: 1.5,
-                height: '100dvh',
-              }}
-            >
-              <Box
-                sx={{
-                  backgroundColor: 'background.level1',
-                  height: '100%',
-                  borderRadius: 'sm',
-                  backgroundSize: 'cover',
-                  backgroundImage:
-                    'url("https://images.unsplash.com/photo-1478860409698-8707f313ee8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4000&q=80")',
-                }}
-              />
-            </Box>
           </Grid>
         </Grid>
       </Main>

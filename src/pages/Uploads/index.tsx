@@ -3,8 +3,6 @@ import { chipClasses } from '@mui/joy/Chip';
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
-import CreateCollection from './components/CreateCollection';
-import UploadFolder from './components/UploadFolder';
 import UploadFile from './components/UploadFile';
 import { TabPanel } from '@mui/joy';
 import InnerLayout from '../../layouts/InnerLayout';
@@ -34,8 +32,7 @@ export default function Uploads() {
                 position: 'relative',
                 zIndex: 1,
                 height: 'var(--_shadow-height)',
-                background:
-                  'radial-gradient(closest-side, rgba(0 0 0 / 0.12), transparent 100%)',
+                background: 'radial-gradient(closest-side, rgba(0 0 0 / 0.12), transparent 100%)',
               },
             }}
           />
@@ -89,23 +86,11 @@ export default function Uploads() {
             })}
           >
             <Tab indicatorInset value={0}>
-              Create Collection
-            </Tab>
-            <Tab indicatorInset value={1}>
-              Upload File
-            </Tab>
-            <Tab indicatorInset value={2}>
-              Upload Folder
+              Crear post
             </Tab>
           </TabList>
           <TabPanel value={0}>
-            <CreateCollection />
-          </TabPanel>
-          <TabPanel value={1}>
             <UploadFile />
-          </TabPanel>
-          <TabPanel value={2}>
-            <UploadFolder />
           </TabPanel>
         </Tabs>
       </Box>

@@ -1,8 +1,13 @@
 import Button from '@mui/joy/Button';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
+import AddIcon from '@mui/icons-material/Add';
+import { Link } from '@mui/joy';
+import useUser from '../../../hooks/useUser';
 
 export default function HeaderSection() {
+  const { session } = useUser();
+
   return (
     <Stack
       direction={{
@@ -21,25 +26,28 @@ export default function HeaderSection() {
             md: 'xl4',
           }}
         >
-          232 stays in Melbourne
+          Posts
         </Typography>
         <Typography level="body-md" color="neutral">
-          Book your next stay at one of our properties.
+          Conocé de lo que se está hablando.
         </Typography>
       </div>
 
-      <Stack direction="row" spacing={1.5}>
-        <Button variant="outlined" color="neutral">
-          Shared
-        </Button>
-        <Button
-          variant="solid"
-          color="primary"
-          startDecorator={<i data-feather="star" />}
-        >
-          Save search
-        </Button>
-      </Stack>
+      {session && (
+        <Stack direction="row" spacing={1.5}>
+          <Link href="/perfil">
+            <Button variant="outlined" color="neutral" href="/">
+              Tu actividad
+            </Button>
+          </Link>
+
+          <Link href="/publicar">
+            <Button variant="solid" color="primary" startDecorator={<AddIcon />}>
+              Crear post
+            </Button>
+          </Link>
+        </Stack>
+      )}
     </Stack>
   );
 }

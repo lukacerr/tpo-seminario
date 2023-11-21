@@ -8,13 +8,13 @@ const Home = lazy(() => import('./pages/Home'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const Forgot = lazy(() => import('./pages/Forgot'));
-const Orders = lazy(() => import('./pages/TODO')); // FIME import('./pages/Orders'));
+const Orders = lazy(() => import('./pages/Orders'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Profile = lazy(() => import('./pages/Profile'));
-const Uploads = lazy(() => import('./pages/TODO')); // FIXME import('./pages/Uploads'));
+const Uploads = lazy(() => import('./pages/Uploads'));
 const Gallery = lazy(() => import('./pages/Gallery'));
 const Messages = lazy(() => import('./pages/TODO')); // FIXME import('./pages/Messages'));
-const Rentals = lazy(() => import('./pages/TODO')); // FIXME import('./pages/Rentals'));
+const Rentals = lazy(() => import('./pages/Rentals'));
 
 export default function App() {
   const location = useLocation();
@@ -48,6 +48,8 @@ export default function App() {
 
         <Route path="/mensajes" element={<Messages />} />
 
+        <Route path="/posts" element={<Rentals />} />
+        <Route path="/posts/:id" element={<Rentals />} />
         <Route path="/" element={<Rentals />} />
 
         {/*

@@ -3,8 +3,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { timeSince } from '../../../utils/time.utils';
-import New from '../../../types/New';
 import { nToLuFormat } from '../../../utils/number.utils';
+import New from '../../../types/New';
 
 function NewCore({ n }: React.PropsWithRef<{ n: New }>) {
   return (

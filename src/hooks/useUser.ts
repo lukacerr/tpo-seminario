@@ -1,12 +1,5 @@
 import { useEffect, useState } from 'react';
-
-export interface User {
-  name?: string;
-  email: string;
-  avatar?: string;
-  description?: string;
-  bio?: string;
-}
+import User from '../types/user';
 
 const [PRIVATE_ROUTES, REDIRECT_AUTH_ROUTES] = [
   ['perfil', 'ajustes', 'publicar', 'mensajes'],

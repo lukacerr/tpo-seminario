@@ -9,6 +9,7 @@ import Typography from '@mui/joy/Typography';
 import OuterLayout from '../../layouts/OuterLayout';
 import GoogleIcon from '../../assets/icons/GoogleIcons';
 import useUser from '../../hooks/useUser';
+import { Checkbox } from '@mui/joy';
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -21,6 +22,7 @@ interface SignInFormElement extends HTMLFormElement {
 
 export default function Register() {
   const { login } = useUser();
+  const [ageCap, setAgeCap] = React.useState(false);
 
   return (
     <OuterLayout>
@@ -87,8 +89,15 @@ export default function Register() {
             <FormLabel>Reafirmá la contraseña</FormLabel>
             <Input type="password" name="confirm" slotProps={{ input: { minLength: 8 } }} />
           </FormControl>
+          <Checkbox
+            size="sm"
+            label="Soy mayor de 18 años"
+            onChange={(e) => setAgeCap(e.target.checked)}
+            name="ageCap"
+            sx={{ paddingBlock: '6px 24px' }}
+          />
 
-          <Button type="submit" fullWidth color="primary">
+          <Button disabled={!ageCap} type="submit" fullWidth color="primary">
             Registrarse
           </Button>
         </form>

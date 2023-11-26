@@ -12,3 +12,5 @@
 ```
 docker compose up
 ```
+
+> La [aplicación](http://localhost:3000/acerca-de) corre sobre http://localhost:3000/, el [CMS](http://localhost:5000/_/) en http://localhost:5000/\_/.

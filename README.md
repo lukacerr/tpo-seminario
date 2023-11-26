@@ -1,4 +1,4 @@
-# Equipo 5
+# Equipo 5 | InverRed
 
 ### Instalación
 
